@@ -7,10 +7,11 @@ import SearchForm from "./SearchForm";
 import MovieDetail from "./MovieDetail";
 import API from "../utils/API";
 
-class OmdbContainer extends Component {
+class TableBody extends Component {
   state = {
-    result: {},
-    search: ""
+    name: "",
+    image: "",
+    email: ""
   };
 
   // When this component mounts, search for the movie "The Matrix"
