@@ -9,7 +9,7 @@ import React, { Component } from "react";
 import API from "../utils/API";
 
 const getResults = () =>
-axios.get('https://randomuser.me/api/').then(res =>
+axios.get('https://randomuser.me/api/?nat=us').then(res =>
   res.data.results.map(({name, image, email, phone, dob}) => ({
     name,
     image,
@@ -103,9 +103,11 @@ class TableBody extends Component {
     <tr>
       <th scope="row">1</th>
       {this.state.results.map((data, i) => (
-        <td key={i}> {data.name} </td>
+        <td key={i}> {data.name.first + " " + data.name.last} </td>
       ))}
-      <td>{this.state.name}</td>
+      {this.state.results.map((data, i) => (
+        <td key={i}> {data.phone} </td>
+        ))}
       <td>{this.state.phone}</td>
       <td>{this.state.email}</td>
     </tr>
