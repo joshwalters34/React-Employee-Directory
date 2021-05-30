@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { Component } from "react";
 // import Container from "./Container";
 // import Row from "./Row";
@@ -7,35 +8,56 @@ import React, { Component } from "react";
 // import MovieDetail from "./MovieDetail";
 import API from "../utils/API";
 
+const getResults = () =>
+axios.get('https://randomuser.me/api/').then(res =>
+  res.data.results.map(({name, image, email, phone, dob}) => ({
+    name,
+    image,
+    email,
+    phone,
+    dob
+  }))
+  );
+
 class TableBody extends Component {
   state = {
-    name: "",
-    image: "",
-    email: "",
-    phone: "",
-    DOB: ""
+    results: []
+    // name: "",
+    // image: "",
+    // email: "",
+    // phone: "",
+    // DOB: ""
   };
 
-  // When this component mounts, search for the movie "The Matrix"
-  componentDidMount() {
-    fetch(API)
-      .then(res => res.json())
-      .then(
-        (result) => {
-          this.setState({
-            isLoaded: true,
-            items: result.items
-          });
-        },
-  
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      )
+  componentDidMount () {
+    getResults().then(results => {
+      this.setState({ results })
+    })
   }
+ 
+  // componentDidMount() {
+  //   fetch(API)
+  //     .then(res => res.json())
+  //     .then(
+  //       (result) => {
+  //         this.setState({
+  //           isLoaded: true,
+  //           name: result.name,
+  //           image: result.image,
+  //           email: result.email,
+  //           phone: result.phone,
+  //           DOB: result.dob
+  //         });
+  //       },
+  
+  //       (error) => {
+  //         this.setState({
+  //           isLoaded: true,
+  //           error
+  //         });
+  //       }
+  //     )
+  // }
   
 
   // getUsers = () => {
@@ -80,9 +102,12 @@ class TableBody extends Component {
   <tbody>
     <tr>
       <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+      {this.state.results.map((data, i) => (
+        <td key={i}> {data.name} </td>
+      ))}
+      <td>{this.state.name}</td>
+      <td>{this.state.phone}</td>
+      <td>{this.state.email}</td>
     </tr>
     <tr>
       <th scope="row">2</th>
