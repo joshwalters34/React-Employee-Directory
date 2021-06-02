@@ -4,6 +4,7 @@ import React, { useState, Component } from "react";
 import TableDisplay from "./TableData"
 import API from "../utils/API";
 import SearchForm from "./SearchForm";
+import Wrapper from "./index"
 
 const getResults = () =>
 axios.get('https://randomuser.me/api/?results=100&nat=us').then(res =>
@@ -15,6 +16,7 @@ axios.get('https://randomuser.me/api/?results=100&nat=us').then(res =>
     dob: dob.date
   }))
   );
+ 
 
   
 
@@ -24,16 +26,32 @@ class TableBody extends Component {
     results: [{}]
      };
 
+  // componentDidMount () {
+  //   API.getResults().then(results => {
+  //     console.log(results)
+  //     this.setState({ 
+  //       results: results.data.results
+  //     })
+  //   })
+    
+  // }
+
   componentDidMount () {
-    getResults().then(results => {
-      this.setState({ 
-        results: results.data.results, 
-      filteredResults: results.data.results })
+    axios.get('https://randomuser.me/api/?results=20&nat=us').then(res =>{
+      var final = res.data.results.map(({name, picture, email, phone, dob}) => ({
+        name: name.first + name.last,
+        picture: picture.medium,
+        email,
+        phone,
+        dob: dob.date
+      }))
+      console.log(final);
+      this.setState({
+        results: final,
+        filteredResults: res.data.results
+      })
     })
   }
- 
- 
-
   
   render() {
     return (
@@ -49,16 +67,21 @@ class TableBody extends Component {
           handleFormSubmit={this.handleFormSubmit}
           // handleInputChange={this.handleInputChange}
         />
+
       <table class="table">
  
   <tbody>
+    <tr>
     
     <TableDisplay 
+
     results = {this.state.results} />
+    </tr>
   
   </tbody>
 </table>
 </div>
+
     
     );
   

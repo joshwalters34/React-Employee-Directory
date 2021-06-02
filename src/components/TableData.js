@@ -1,4 +1,5 @@
 import React from "react";
+import Wrapper from "./index"
 import axios from "axios";
 
 // const getResults = () =>
@@ -22,7 +23,9 @@ import axios from "axios";
   //   DOB: dob
   // }))
   // );
+
     return (
+      
     <table class="table">
     <thead>
       <tr>
@@ -35,17 +38,20 @@ import axios from "axios";
       </tr>
     </thead>
     <tbody>
-      { (results.length > 0) ? results.map( (results, index) => {
+    
+      { (results.length > 0) ? results.map( (item, index) => {
         return (
+          
           <tr key={ index }>
-            <td>{ results.picture.medium}</td>
-            <td>{ results.name.first}</td>
-            <td>{ results.phone}</td>
-            <td>{ results.email}</td>
-            <td>{ results.dob}</td> 
+            <td><img src={ item.picture}></img></td>
+            <td>{ item.name}</td>
+            <td>{ item.phone}</td>
+            <td>{ item.email}</td>
+            <td>{ item.dob}</td> 
           </tr>
         )
       }) : <tr><td colSpan='5'> Loading... </td></tr>
+      
     }
    
        
