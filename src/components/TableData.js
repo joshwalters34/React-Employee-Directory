@@ -1,37 +1,20 @@
 import React from "react";
-import Wrapper from "./index"
-import axios from "axios";
 
-// const getResults = () =>
-// axios.get('https://randomuser.me/api/?results=10').then(res =>
-//   res.data.results.map(({name, picture, email, phone, dob}) => ({
-//     name: name,
-//     image: picture,
-//     email: email,
-//     phone: phone,
-//     DOB: dob
-//   }))
-//   );
 
   function TableDisplay({ results }) {
-  //   axios.get('https://randomuser.me/api/?results=10').then(res =>
-  // res.data.results.map(({name, picture, email, phone, dob}) => ({
-  //   name: name,
-  //   image: picture,
-  //   email: email,
-  //   phone: phone,
-  //   DOB: dob
-  // }))
-  // );
+  
 
     return (
       
+      
     <table class="table">
-    <thead>
+     <thead>
       <tr>
      
         <th scope="col">Image</th>
-        <th scope="col">Name</th>
+        {/* <th scope="col"><div> onClick={() => sortData(column)}</div>
+           Name</th> */}
+           <th scope="col">Name</th>
         <th scope="col">Phone</th>
         <th scope="col">Email</th>
         <th scope="col">DOB</th>
@@ -54,10 +37,9 @@ import axios from "axios";
       
     }
    
-       
     </tbody>
   </table>
     
     )}
 
-export default TableDisplay;
+export default TableDisplay
