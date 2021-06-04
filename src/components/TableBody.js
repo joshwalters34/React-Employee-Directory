@@ -76,6 +76,7 @@ export default class TableBody extends Component {
   };
 
   render() {
+    
     return (
       <div>
         <div class="jumbotron jumbotron-fluid">
@@ -94,11 +95,24 @@ export default class TableBody extends Component {
         />
 
         <table class="table">
+          {/* <thead>
+            <tr>
+              <th scope="col">Image</th>
+              <th scope="col">
+                <div onClick={() => sortData("name")}></div>
+                Name
+              </th>
+
+              <th scope="col">Phone</th>
+              <th scope="col">Email</th>
+              <th scope="col">DOB</th>
+            </tr>
+          </thead> */}
           <tbody>
             <tr>
               <TableDisplay
-                // sortData={this.sortData}
-                // data={orderBy(this.state.results, this.state.columnToSort, this.state.sortDirection)}
+                sortData={this.sortData}
+                data={orderBy(this.state.results, this.state.columnToSort, this.state.sortDirection)}
 
                 results={this.state.results}
               />
@@ -109,4 +123,3 @@ export default class TableBody extends Component {
     );
   }
 }
-

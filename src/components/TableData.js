@@ -1,6 +1,7 @@
 import React from "react";
 
 
+
   function TableDisplay({ results }) {
   
 
@@ -9,12 +10,12 @@ import React from "react";
       
     <table class="table">
      <thead>
-      <tr>
+      <tr> 
      
         <th scope="col">Image</th>
-        {/* <th scope="col"><div> onClick={() => sortData(column)}</div>
-           Name</th> */}
-           <th scope="col">Name</th>
+        <th scope="col"><btn onClick={() => this.sortData("name")}></btn>
+           Name</th>
+           
         <th scope="col">Phone</th>
         <th scope="col">Email</th>
         <th scope="col">DOB</th>
