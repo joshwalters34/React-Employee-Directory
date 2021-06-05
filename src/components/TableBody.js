@@ -1,9 +1,9 @@
-/* eslint-disable no-dupe-class-members */
 import axios from "axios";
 import React, { useState, Component } from "react";
 import TableDisplay from "./TableData";
 import API from "../utils/API";
 import SearchForm from "./SearchForm";
+import TableHeader from "./TableHeader";
 import orderBy from "lodash/orderBy";
 
 const updateSort = {
@@ -14,15 +14,16 @@ const updateSort = {
 export default class TableBody extends Component {
   state = {
     results: [{}],
-    columnToSort: "",
-    sortDirection: "",
+    filteredResults: [{}],
+    columnToSort: "name",
+    sortDirection: "asc",
   };
 
   componentDidMount() {
     axios.get("https://randomuser.me/api/?results=20&nat=us").then((res) => {
       var final = res.data.results.map(
         ({ name, picture, email, phone, dob }) => ({
-          name: name.first + name.last,
+          name: name.first + " " + name.last,
           picture: picture.medium,
           email,
           phone,
@@ -37,52 +38,66 @@ export default class TableBody extends Component {
     });
   }
 
-  //  dataSearch = () => {
-  //     const [searchTerm, setSearchTerm] = useState("")
-  //     // eslint-disable-next-line no-lone-blocks
-  //     {results.filter((val) => {
-  //       if (searchTerm == "") {
-  //         return val
-  //       } else if (val.name.toLowerCase().includes(searchTerm.lowercase())) {
-  //         return val
-  //       }
-  //       }
-  //       )}
+  dataSearch = () => {
+    let { searchInput } = this.state;
+    let filteredResults = this.props.results.filter((value) => {
+      return (
+        value.Name.toLowerCase()
+          .includes(searchInput.toLowerCase())
+          // value.status.toLowerCase().includes(searchInput.toLowerCase()) ||
+          // value.visits
+          .toString()
+          .toLowerCase()
+          .includes(searchInput.toLowerCase())
+      );
+    });
 
-  //   }
+    this.props.handleSetData(filteredResults);
+  };
 
-  //   handleInputChange = event => {
-  //       const value = event.target.value;
-  //       const name = event.target.name;
-  //       this.setState({
-  //         [name]: value
-  //       });
-  //     };
+  handleInputChange = (event) => {
+    const value = event.target.value;
+    const name = event.target.name;
+    this.setState({
+      [name]: value,
+    });
+  };
 
-  //     // When the form is submitted, search the OMDB API for the value of `this.state.search`
-  //     handleFormSubmit = event => {
-  //       event.preventDefault();
-  //       this.dataSearch(this.state.search);
-  //     };
+  // When the form is submitted, search the OMDB API for the value of `this.state.search`
+  handleFormSubmit = (event) => {
+    event.preventDefault();
+    this.dataSearch(this.state.search);
+  };
 
   sortData = (columnName) => {
     this.setState((state) => ({
       columnToSort: columnName,
       sortDirection:
-        state.columnToSort === columnName
-          ? updateSort[state.sortDirection]
+        // state.columnToSort === columnName
+        state.sortDirection === "asc"
+          ? // ? updateSort[state.sortDirection]
+            "desc"
           : "asc",
     }));
   };
 
   render() {
-    
+    // let {filteredResults} = this.state
+
+    console.log(
+      "SORTED",
+      orderBy(
+        this.state.results,
+        [this.state.columnToSort],
+        [this.state.sortDirection]
+      )
+    );
     return (
       <div>
-        <div class="jumbotron jumbotron-fluid">
-          <div class="container">
-            <h1 class="display-4">Employee Directory</h1>
-            <p class="lead">
+        <div className="jumbotron jumbotron-fluid">
+          <div className="container">
+            <h1 className="display-4">Employee Directory</h1>
+            <p className="lead">
               Click on each header to sort the column or use the search box to
               narrow your results.
             </p>
@@ -91,33 +106,22 @@ export default class TableBody extends Component {
         <SearchForm
           search={this.state.search}
           handleFormSubmit={this.handleFormSubmit}
-          // handleInputChange={this.handleInputChange}
+          handleInputChange={(e) =>
+            this.setState({ [e.target.name]: e.target.value })
+          }
         />
+        <table className="table">
+          <TableHeader sortData={this.sortData} />
 
-        <table class="table">
-          {/* <thead>
-            <tr>
-              <th scope="col">Image</th>
-              <th scope="col">
-                <div onClick={() => sortData("name")}></div>
-                Name
-              </th>
-
-              <th scope="col">Phone</th>
-              <th scope="col">Email</th>
-              <th scope="col">DOB</th>
-            </tr>
-          </thead> */}
-          <tbody>
-            <tr>
-              <TableDisplay
-                sortData={this.sortData}
-                data={orderBy(this.state.results, this.state.columnToSort, this.state.sortDirection)}
-
-                results={this.state.results}
-              />
-            </tr>
-          </tbody>
+          <TableDisplay
+            sortData={this.sortData}
+            data={orderBy(
+              this.state.results,
+              [this.state.columnToSort],
+              [this.state.sortDirection]
+            )}
+            results={this.state.results}
+          />
         </table>
       </div>
     );
